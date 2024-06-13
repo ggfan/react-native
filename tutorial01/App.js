@@ -1,14 +1,24 @@
+import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet,View, Button, Text } from 'react-native';
 
 export default function App() {
+  const [name, setName] = useState("Gerry");
+  const clickMe = () => {
+    setName("Knowledge");      //update the "name" state.
+    setPerson({name:"Jason", age:24});  //Update the "person" state.
+  };
+
+  // example of other cobject state:
+  const [person, setPerson] = useState({name:"Tony", age:23});
+
   return (
     <View style={styles.container}>
-      <Button id={1} title="click me" color="red" onPress={() => alert("Buttone clicked")} disabled={false}></Button>
-      <Button id={2} title="OK" color="black" onPress={() => alert("This is a button Tutorial")} ></Button>
-      <Text>hello</Text>
-      <Text>
-      </Text>
+      <Text>{name}</Text>
+      <Text>Myname is {person.name} and my age is {person.age}</Text>
+      <View style={styles.button}>
+        <Button title="change" color="yellow" onPress={clickMe} />
+      </View>
     </View>
   );
 }
@@ -22,4 +32,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  button: {
+    color:"yellow",
+    backgroundColor:"red",
+    padding: 10
+  }
 });
