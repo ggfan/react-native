@@ -1,42 +1,46 @@
-// TextInput
+//ScrollView for list/array
 import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,View, Button, Text, TextInput } from 'react-native';
+import { StyleSheet,View, Button, Text, TextInput, ScrollView} from 'react-native';
 
 export default function App() {
-  const [name, setName] = useState("Gerry");
-  const [age, setAge] = useState(24);
-
-
+  const [fruit, setFruit] = useState ([
+     {name: "Apple", key:1},
+     {name: "Mango", key:2},
+     {name: "Orange", key:3},
+     {name: "Banana", key:4},
+     {name: "Mango", key:5},
+     {name: "Grape", key:6},
+     {name: "Watermelon", key:7},
+     {name: "Plum", key:8},
+     {name: "Tomato", key:9},
+     {name: "Fig", key:10},
+  ]);
   return (
-    <View style={styles.container}>
-      <Text>Enter your name:</Text>
-      <TextInput style={styles.input}
-                 onChangeText={(text)=>setName(text)}
-                 placeholder="Enter your name"/>
-      <Text>Enter your age:</Text>
-      <TextInput style={styles.input}
-                 onChangeText={(text)=>setAge(text)}
-                 placeholder="Enter your age"
-                 keyboardType='numeric'/>
-
-      <Text>My name is {name} and my age is {age}.</Text>
-    </View>
+    <ScrollView style={styles.container}>
+      { fruit.map((item)=>{
+          return (
+              <View key={item.key}>
+                  <Text style={styles.item}>{item.name}</Text>
+              </View>
+          )})
+      }
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: 'white',
+    marginTop:20,
+//    alignItems: 'center',
+//    justifyContent: 'center',
   },
-  input: {
-    borderColor:"black",
-    borderWidth: 1,
-    padding: 10,
-    margin: 10,
-    width: 150,
-  }
+  item: {
+    fontSize: 24,
+    backgroundColor: "yellow",
+    marginTop: 20,
+    padding:20,
+  },
 });
