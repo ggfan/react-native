@@ -1,43 +1,32 @@
-//FlatList: better performance, must have "key" (or keyExtractor)
+//Touchable component
 import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,View, Button, Text, TextInput,
-         ScrollView, FlatList } from 'react-native';
+import { StyleSheet,View, Button, Text, FlatList, TouchableOpacity} from 'react-native';
 
 export default function App() {
-  const [fruit, setFruit] = useState ([
-     {name: "Apple", key:1},
-     {name: "Mango", key:2},
-     {name: "Orange", key:3},
-     {name: "Banana", key:4},
-     {name: "Mango", key:5},
-     {name: "Grape", key:6},
-     {name: "Watermelon", key:7},
-     {name: "Plum", key:8},
-     {name: "Tomato", key:9},
-     {name: "Fig", key:10},
+  const [people, setPeople] = useState([
+    {name: "Gerry",key:"1"},
+    {name: "Jerry", key:"2"},
+    {name: "Jeff", key: "3"},
+    {name: "Tony", key:"4"},
+    {name: "Bruce", key: "5"},
   ]);
+
+  function pressHandler(str) {
+      console.log("pressHandler for :" + str);
+  }
   return (
     <View style={styles.container}>
-      <FlatList
-        data={fruit}
-        renderItem={({item})=>(
-          <View>
-            <Text style = {styles.item}>{item.name}</Text>
-          </View>
-        )} 
-      />
-      {/*
-      <ScrollView style={styles.container}>
-      { fruit.map((item)=>{
-          return (
-              <View key={item.key}>
+        <FlatList
+            data = {people}
+            renderItem = {({item})=> {
+              return (<View>
+                <TouchableOpacity onPress={()=>pressHandler(item.name)}>
                   <Text style={styles.item}>{item.name}</Text>
-              </View>
-          )})
-      }
-    </ScrollView>
-    */}
+                </TouchableOpacity>
+                </View>);
+            }}
+        />
     </View>
   );
 }
