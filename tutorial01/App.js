@@ -1,7 +1,8 @@
-//ScrollView for list/array
+//FlatList: better performance, must have "key" (or keyExtractor)
 import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,View, Button, Text, TextInput, ScrollView} from 'react-native';
+import { StyleSheet,View, Button, Text, TextInput,
+         ScrollView, FlatList } from 'react-native';
 
 export default function App() {
   const [fruit, setFruit] = useState ([
@@ -17,7 +18,17 @@ export default function App() {
      {name: "Fig", key:10},
   ]);
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
+      <FlatList
+        data={fruit}
+        renderItem={({item})=>(
+          <View>
+            <Text style = {styles.item}>{item.name}</Text>
+          </View>
+        )} 
+      />
+      {/*
+      <ScrollView style={styles.container}>
       { fruit.map((item)=>{
           return (
               <View key={item.key}>
@@ -26,6 +37,8 @@ export default function App() {
           )})
       }
     </ScrollView>
+    */}
+    </View>
   );
 }
 
