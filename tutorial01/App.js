@@ -1,31 +1,19 @@
-// Alert()
+// Image Displaying.
 import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,View, TextInput, Button, Alert, Text } from 'react-native';
+import { StyleSheet,View, TextInput, Button, Alert, Text, Image, Dimensions } from 'react-native';
+
+let imgFile=require('./assets/test-image.png');
+let assetImage = Image.resolveAssetSource(imgFile);
+let win = Dimensions.get('window');
+
+const ratio = Math.min(win.width / assetImage.width, win.height / assetImage.height);
 
 export default function App() {
-  const [age, setAge] = useState(24);
-  const ageHandler = () => {
-    if (age > 21)
-    {
-      Alert.alert("Yay");
-    } else {
-      Alert.alert("Nah");
-    }
-  }
-
+  printSizes();  //
   return (
     <View style={styles.container}>
-      <Text>Your Name:</Text>
-      <TextInput style={styles.input} placeholder="Your name:"/>
-      <Text>Your Age:</Text>
-      <TextInput style={styles.input}  placeholder="Your age" onChangeText={(text)=>(setAge(text))}/>
-      {/*
-        Button Title: on Android (L+) are all capticalized. Need find a way to turn it off.
-                      on Apple: works file.
-        label: does not work on either OS.
-      */}
-      <Button title="Can I Drink?" onPress={()=>ageHandler()}></Button>
+      <Image source={imgFile} style={styles.image}></Image>
     </View>
   );
 }
@@ -37,14 +25,17 @@ const styles = StyleSheet.create({
     color: "black",
     marginTop:20,
     padding:20,
-//    alignItems: 'center',
-//    justifyContent: 'center',
   },
-  input: {
-    backgroundColor: 'yellow',
-    padding: 20,
-    borderWidth:4,
-    marginTop: 10,
-    color: "red",
+  image: {
+    width:  ratio * assetImage.width,
+    height: ratio * assetImage.height,
+    //resizeMode:'contain', //'center'
   }
 });
+
+function printSizes() {
+  console.log("ratio: " + ratio);
+  console.log("Image: " + assetImage.width + " x " + assetImage.height);
+  console.log("Device: " + win.width + " x " + win.height);
+  console.log("Style size: " + styles.image.width + " x " + styles.image.height);
+}
