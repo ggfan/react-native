@@ -1,19 +1,31 @@
-// Image Displaying.
+//Yes-No Button
 import React, {useState} from 'react'
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet,View, TextInput, Button, Alert, Text, Image, Dimensions } from 'react-native';
+import { StyleSheet,View, Button, TextInput, Alert, Text, Image, Dimensions } from 'react-native';
 
-let imgFile=require('./assets/test-image.png');
-let assetImage = Image.resolveAssetSource(imgFile);
-let win = Dimensions.get('window');
-
-const ratio = Math.min(win.width / assetImage.width, win.height / assetImage.height);
-
+const prompt = {name: "your name", age: "your age", gender:"your gender"};
 export default function App() {
-  printSizes();  //
+  const [name, setName] = useState(" ");
+  const [age, setAge] = useState(0);
+  const [gender, setGender] = useState(" ");
+  function pressHandler() {
+    Alert.alert("Details", "Are you sure you want to submit ?", [
+      {text:"Yes", onPress:()=>console.log("yes is pressed")},
+      {text:"No", onPress:()=>noHandler()},
+    ])
+  }
+  function noHandler() {
+    setName(prompt.name);
+    setAge(prompt.age);
+    setGender(prompt.gender);
+  }
   return (
     <View style={styles.container}>
-      <Image source={imgFile} style={styles.image}></Image>
+      <TextInput style={styles.input} placeholder={prompt.name} onChangeText={(text)=>setName(text)}/>
+      <TextInput style={styles.input} placeholder={prompt.age} onChangeText={(text)=>setAge(text)}/>
+      <TextInput style={styles.input} placeholder={prompt.gender} onChangeText={(text)=>setGender(text)}/>
+      <Button title="Submit" onPress={()=>pressHandler()}></Button>
+      <Text>{name}  {age}  {gender}</Text>
     </View>
   );
 }
@@ -26,16 +38,9 @@ const styles = StyleSheet.create({
     marginTop:20,
     padding:20,
   },
-  image: {
-    width:  ratio * assetImage.width,
-    height: ratio * assetImage.height,
-    //resizeMode:'contain', //'center'
+  input: {
+    marginTop:10,
+    backgroundColor: 'pink',
+    color: "blue",
   }
 });
-
-function printSizes() {
-  console.log("ratio: " + ratio);
-  console.log("Image: " + assetImage.width + " x " + assetImage.height);
-  console.log("Device: " + win.width + " x " + win.height);
-  console.log("Style size: " + styles.image.width + " x " + styles.image.height);
-}
