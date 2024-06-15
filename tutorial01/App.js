@@ -1,30 +1,22 @@
-// useEffect: track one state change, but ignore other states.
-//            be default, it tracks all state changing events.
+// Fine grain usage of the screen (View): it is clumsy per se.
 import React, {useState, useEffect} from 'react'
-import { StyleSheet,View, Button, TextInput, Alert, Text, Image, Dimensions,
-         TouchableOpacity, TouchableWithoutFeedback, Keyboard } from 'react-native';
-
+import { View, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export default function App() {
-  const [number, setNumber] = useState(0);
-  const [name, setName] = useState("");
-  useEffect(() => {
-    console.log("changing: " + name + " " + number);
-    if (number > 30 ) {
-      console.warn("DOM is updated", number);
-      if (number > 60) {
-        setNumber(0);
-      }
-    }
-  },[number, /*name*/]);
-
   return (
-      <View style={styles.container}>
-          <Text aria-label="number:" style= {styles.text}>{number}</Text>
-          <Button title="AutoUpdate" onPress={()=>{setNumber(number + 1)}}/>
-          {/* take a space, similar to <br></br>*/}
-          <Text>debugging: {name}</Text>
-          <Button title="ManualUpdate" onPress={()=>setName("MyName" + number)} />
+      <View style={[styles.container, {flexDirection:'column' /* This can not be a 'row', it is actually a row. default also works. */}]}>
+        <Text>Gerry On the Top</Text>
+        <View style={[{backgroundColor: "red", flex: 1, flexDirection:'row'}, styles.item]}></View>
+        <View style={[{backgroundColor: "green", flex: 2, flexDirection:'row'}, styles.item]}></View>
+        <View style={[{backgroundColor: "blue", flex: 1, flexDirection:'row'}, styles.item]} />
+        {/* Set up a vertical area: does not work yet*/}
+        <View style={{backgroundColor: '#880', flex: 8, flexDirection: 'row'}}>
+            {/* Within this view, we have 2 columns below:*/}
+            <View style={{backgroundColor:"pink", width:64, height: 64, flex:1, flexDirection: 'column'}}></View>
+            <View style={{backgroundColor:"greenyellow", width:128, height: 64, flex: 1, flexDirection:'column'}}></View>
+        </View>
+        <Text>Hello from the Botton!</Text>
       </View>
   );
 }
@@ -32,7 +24,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'white',
+    // flexDirection: 'row',
+    backgroundColor: '#AAA',
     color: "black",
     marginTop:20,
     padding:20,
@@ -55,5 +48,9 @@ const styles = StyleSheet.create({
   text: {
     font: 20,
     color: "red",
+  },
+  item: {
+    width:100,
+    height: 100
   },
 });
