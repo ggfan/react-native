@@ -1,22 +1,29 @@
-// Fine grain usage of the screen (View): it is clumsy per se.
+// Use Modal component (it is a full screen above the main screen)
+// Noted: react native button is really limited: not have a chance to put the button title
+//        to the left.
 import React, {useState, useEffect} from 'react'
-import { View, Text } from 'react-native';
+import { View, Text, Modal, Button } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 export default function App() {
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal=()=>setModalVisible(!modalVisible);
+  function CreateButton(props) {
+    return (
+      <Button title={props.name}   buttonStyle={{ justifyContent: 'flex-end' }} onPress={toggleModal}/>
+    )
+  }
+
   return (
-      <View style={[styles.container, {flexDirection:'column' /* This can not be a 'row', it is actually a row. default also works. */}]}>
-        <Text>Gerry On the Top</Text>
-        <View style={[{backgroundColor: "red", flex: 1, flexDirection:'row'}, styles.item]}></View>
-        <View style={[{backgroundColor: "green", flex: 2, flexDirection:'row'}, styles.item]}></View>
-        <View style={[{backgroundColor: "blue", flex: 1, flexDirection:'row'}, styles.item]} />
-        {/* Set up a vertical area: does not work yet*/}
-        <View style={{backgroundColor: '#880', flex: 8, flexDirection: 'row'}}>
-            {/* Within this view, we have 2 columns below:*/}
-            <View style={{backgroundColor:"pink", width:64, height: 64, flex:1, flexDirection: 'column'}}></View>
-            <View style={{backgroundColor:"greenyellow", width:128, height: 64, flex: 1, flexDirection:'column'}}></View>
-        </View>
-        <Text>Hello from the Botton!</Text>
+      <View style={[styles.container]}>
+        <Text>Main Screen</Text>
+        <Modal visible={modalVisible}>
+          <View style={styles.container}>
+            <CreateButton name="<<" />
+            <Text>Modal</Text>
+          </View>
+        </Modal>
+        <CreateButton name={">>"} />
       </View>
   );
 }
