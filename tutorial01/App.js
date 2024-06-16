@@ -1,29 +1,25 @@
-// Use Modal component (it is a full screen above the main screen)
-// Noted: react native button is really limited: not have a chance to put the button title
-//        to the left.
+// use Switch component (left: disabled)
+// here we encounter the different behavior on Apple and Android
+// need the fixup.
 import React, {useState, useEffect} from 'react'
-import { View, Text, Modal, Button } from 'react-native';
+import { View, Switch } from 'react-native';
 import { StyleSheet } from 'react-native';
 
 export default function App() {
-  const [modalVisible, setModalVisible] = useState(false);
-  const toggleModal=()=>setModalVisible(!modalVisible);
-  function CreateButton(props) {
-    return (
-      <Button title={props.name}   buttonStyle={{ justifyContent: 'flex-end' }} onPress={toggleModal}/>
-    )
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => {
+    setIsEnabled(!isEnabled); // setIsEnabled(prevState => !prevState);
+    console.log("Value Changed to: " + (isEnabled? "true":"false"));
   }
-
   return (
       <View style={[styles.container]}>
-        <Text>Main Screen</Text>
-        <Modal visible={modalVisible}>
-          <View style={styles.container}>
-            <CreateButton name="<<" />
-            <Text>Modal</Text>
-          </View>
-        </Modal>
-        <CreateButton name={">>"} />
+        <Switch
+          trackColor={{false: "red", true:"green"}}
+          thumbColor={isEnabled?"yellow" : "pink"}
+          onValueChange={toggleSwitch}
+          ios_backgroundColor={"red"}
+          value={isEnabled}
+        />
       </View>
   );
 }
