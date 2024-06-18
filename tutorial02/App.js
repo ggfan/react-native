@@ -1,26 +1,31 @@
 import { StatusBar } from 'expo-status-bar';
-import {useState} from 'react'
-import { Text, View, Pressable } from 'react-native';
+import {useState, useEffect} from 'react'
+import { Text, View, ScrollView, RefreshControl } from 'react-native';
 import styles from './styles'
 
 export default function App() {
-  const [count, setCount] = useState(0);
+  const [refresh, setRefresh] = useState(false);
+  const prompts = ["Pull to Refresh", "Pulling in Progress"];
+  const [prompt, setPrompt] = useState(prompts[0]);
+
+  const pullMe= () => {
+    setRefresh(true);
+    setTimeout(()=>setRefresh(false), 4000);
+  }
+
+  useEffect(()=>{
+    setPrompt (refresh? prompts[1] : prompts[0]);
+  }, [refresh]);
 
   return (
     <View style={styles.container}>
-      <Text>{count}</Text>
-      <Pressable
-        onPress={() => setCount(count+1) }
-        style={({pressed}) => [
-          {
-            backgroundColor: pressed ? 'rgb(255, 0, 0)' : 'yellow',
-          },
-          // styles.wrapperCustom,
-        ]}>
-        {({pressed}) => (
-          <Text>{pressed ? 'Pressed!' : 'Press Me'}</Text>
-        )}
-      </Pressable>
+      <ScrollView
+        refreshControl = {
+          <RefreshControl refreshing={refresh} onRefresh={()=> pullMe()} 
+          />  
+      }>
+      <Text>{prompt}</Text>
+      </ScrollView>
     </View>
   );
 }
